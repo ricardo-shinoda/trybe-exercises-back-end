@@ -1,1 +1,1 @@
-# trybe-exercises-back-end
+Repository dedicated for Back-end study at Trybe.
