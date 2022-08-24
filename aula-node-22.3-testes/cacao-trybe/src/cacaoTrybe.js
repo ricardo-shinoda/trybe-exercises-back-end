@@ -26,14 +26,36 @@ const getChocolatesByBrand = async (brandId) => {
   return cacaoTrybe.chocolates.filter((chocolate) => chocolate.brandId === brandId);
 }
 
-// const getChocolateQuantity = async () => {
-//   const cacaoTrybe = await readCacaoTrybeFile();
-//   return cacaoTrybe.chocolates.length;
-// }
+const findChocolateByName = async (query) => {
+  const cacaoTrybe = await readCacaoTrybeFile();
+  return cacaoTrybe.chocolates
+    .filter((chocolate) => chocolate.name.toLowerCase().includes(query.toLowerCase()));
+};
+
+const updateChocolate = async (id, update) => {
+  const cacaoTrybe = await readCacaoTrybeFile();
+  const chocolateToUpdate = cacaoTrybe.chocolates.find(
+    (chocolate) => chocolate.id === id,
+  );
+
+  if (chocolateToUpdate) {
+    cacaoTrybe.chocolates = cacaoTrybe.chocolates.map((chocolate) => {
+        if (chocolate.id === id) return { ...chocolate, ...update };
+        return chocolate;
+      });
+  
+    await writeCacaoTrybeFile(cacaoTrybe);
+    return { ...chocolateToUpdate, ...update };
+  }
+
+  return false;
+};
 
 module.exports = {
     getAllChocolates,
     getChocolateById,
     getChocolatesByBrand,
-    // getChocolateQuantity,
+    findChocolateByName,
+    readCacaoTrybeFile,
+    updateChocolate,
 };
